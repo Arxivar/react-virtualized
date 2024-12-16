@@ -1,6 +1,5 @@
 /** @flow */
 import * as React from 'react';
-import {findDOMNode} from 'react-dom';
 import type {CellMeasureCache} from './types';
 
 type Children = (params: {measure: () => void}) => React.Element<*>;
@@ -32,6 +31,8 @@ export default class CellMeasurer extends React.PureComponent<Props> {
 
   _child: ?Element;
 
+  _cellRef = React.createRef();
+
   componentDidMount() {
     this._maybeMeasureCell();
   }
@@ -54,7 +55,7 @@ export default class CellMeasurer extends React.PureComponent<Props> {
   _getCellMeasurements() {
     const {cache} = this.props;
 
-    const node = this._child || findDOMNode(this);
+    const node = this._child || this._cellRef.current;
 
     // TODO Check for a bad combination of fixedWidth and missing numeric width or vice versa with height
 
